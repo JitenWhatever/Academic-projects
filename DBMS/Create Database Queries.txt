@@ -1,0 +1,77 @@
+1 CREATE TABLE `User`(
+		Email varchar(50) NOT NULL,
+		FirstName varchar(50) NOT NULL,
+    		LastName varchar(50) NOT NULL,
+    		Password varchar(50) NOT NULL,
+		PRIMARY KEY(Email)	
+		);
+2 CREATE TABLE RegularUser(
+		Email varchar(50) NOT NULL,
+		Sex char(1) NULL,
+		Dob datetime NULL,
+		CurrentCity varchar(50) NULL,
+		Hometown varchar(50) NULL,
+		PRIMARY KEY(Email),
+		FOREIGN KEY(Email)
+			REFERENCES `user`(Email)	
+		);
+3 CREATE TABLE AdminUser(
+		Email varchar(50) NOT NULL,
+		LastLogin datetime NOT NULL,
+		PRIMARY KEY(Email),
+		FOREIGN KEY(Email)
+			REFERENCES `user`(Email)	
+		);
+4 CREATE TABLE Interests(
+		Email varchar(50) NOT NULL,
+		Interest varchar(50) NOT NULL,
+		PRIMARY KEY(Email, Interest),
+		FOREIGN KEY(Email)
+			REFERENCES `user`(Email)	
+		);
+5 CREATE TABLE Attend(
+		Email varchar(50) NOT NULL,
+		SchoolName varchar(50) NOT NULL,
+    		YearGraduated int NULL,
+    		UNIQUE(Email,SchoolName,YearGraduated),
+		FOREIGN KEY(Email)
+    			REFERENCES RegularUser(Email),
+		FOREIGN KEY(SchoolName)
+			REFERENCES School(SchoolName)	
+		);
+6 CREATE TABLE Employment(
+		Email varchar(50) NOT NULL,
+		EmployerName varchar(50) NOT NULL,
+    		JobTitle varchar(50) NOT NULL,
+    		UNIQUE(Email,EmployerName,JobTitle),
+		FOREIGN KEY(Email)
+    			REFERENCES RegularUser(Email),
+		FOREIGN KEY(EmployerName)
+			REFERENCES Employer(EmployerName)	
+		);
+7 CREATE TABLE Friendship(
+		Email varchar(50) NOT NULL,
+		FriendEmail varchar(50) NOT NULL,
+    		Relationship varchar(50) NOT NULL,
+    		DateConnected datetime NULL,
+		PRIMARY KEY(Email,FriendEmail),
+    		FOREIGN KEY(Email)
+    			REFERENCES RegularUser(Email),
+    		FOREIGN KEY(FriendEmail)
+    			REFERENCES RegularUser(Email)
+		);
+8 CREATE TABLE Employer(
+		EmployerName varchar(50) NOT NULL,
+		PRIMARY KEY(EmployerName)	
+		);
+9  CREATE TABLE SchoolType(
+		TypeName varchar(50) NOT NULL,
+		PRIMARY KEY(TypeName)
+		);
+10  CREATE TABLE School(
+		SchoolName varchar(50) NOT NULL,
+     		TypeName varchar(50) NOT NULL,
+		PRIMARY KEY(SchoolName),
+     		FOREIGN KEY(TypeName)
+     		REFERENCES SchoolType(TypeName)
+		);
